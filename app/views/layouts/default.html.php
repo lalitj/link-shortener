@@ -14,7 +14,7 @@
 	<?php echo $this->html->style(array('bootstrap.min', 'lithified')); ?>
 	<?php echo $this->scripts(); ?>
 	<?php echo $this->styles(); ?>
-	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
+	<?php //echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 </head>
 <body class="lithified">
 	<div class="container-narrow">
@@ -22,19 +22,10 @@
 		<div class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<li>
-					<a href="http://lithify.me/docs/manual/quickstart">Quickstart</a>
-				</li>
-				<li>
-					<a href="http://lithify.me/docs/manual">Manual</a>
-				</li>
-				<li>
-					<a href="http://lithify.me/docs/lithium">API</a>
-				</li>
-				<li>
-					<a href="http://lithify.me/">More</a>
+					<?= $this->html->link('New Short Link', ['Urls::add']) ?>
 				</li>
 			</ul>
-			<a href="http://lithify.me/"><h3>&#10177;</h3></a>
+			<?= $this->html->link('Home', ['Urls::index']) ?>
 		</div>
 
 		<hr>

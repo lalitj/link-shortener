@@ -14,7 +14,23 @@ class Urls extends \lithium\data\Model {
 		'views' => array('type' => 'integer')
 	);
 	
-	public $validates = array();
+	 public $validates = array(
+        'url' => array(
+            array(
+                'notEmpty',
+                'required' => true,
+                'message' => 'Please supply a url.'
+            ),
+			array(
+                'unique',
+                'message' => 'This URL Already Added'
+            ),
+			array(
+                'url',
+                'message' => 'Enter a valid URL'
+            )
+        )
+    );
 }
 
 ?>

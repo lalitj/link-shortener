@@ -42,9 +42,16 @@ use lithium\data\Connections;
  */
 Connections::add('default', array(
   'development' => array(
-    'type' => 'MongoDb',
+    /*'type' => 'MongoDb',
     'host' => 'localhost',
- 	  'database' => 'link_shortener_dev' 
+ 	  'database' => 'link_shortener_dev' */
+	'type' => 'database',
+ 	'adapter' => 'MySql',
+ 	'host' => 'localhost',
+ 	'login' => 'root',
+ 	'password' => '',
+ 	'database' => 'link_shortener_dev',
+ 	'encoding' => 'UTF-8'  
   ),
   'production' => array(
     'type' => 'MongoDb',

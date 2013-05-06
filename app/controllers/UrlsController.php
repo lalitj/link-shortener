@@ -4,11 +4,13 @@ namespace app\controllers;
 
 use app\models\Urls;
 use lithium\action\DispatchException;
+use lithium\security\Password;
 
 class UrlsController extends \lithium\action\Controller {
 
 	public function index() {
 		$urls = Urls::all();
+		//$this->processData($urls);
 		return compact('urls');
 	}
 
@@ -18,33 +20,57 @@ class UrlsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
+		
 		$url = Urls::create();
-
-		if (($this->request->data) && $url->save($this->request->data)) {
-			return $this->redirect(array('Urls::view', 'args' => array($url->id)));
+		$error = "";
+		if ($this->request->data) {
+		
+		$data = $this->request->data;
+		$this->request->data['hash'] = Password::hash($data['url']);
+		$this->request->data['shortlink'] = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5);
+			if($url->save($this->request->data)) {
+				//return $this->redirect(array('Urls::view', 'args' => array($url->id)));
+			} else { 
+				 $errors = $url->errors();
+				 if(isset($errors['url'])){
+					$error = "Errors:".implode(', ',$errors['url']);
+				 }
+			}
 		}
-		return compact('url');
+		return compact('url','error');
 	}
 
 	public function edit() {
-		$url = Urls::find($this->request->id);
-
+		//$this->request->shortcode
+		$options['conditions'] = array('shortlink' => $this->request->shortcode);
+		$url = Urls::find('all',$options);
+		$url_link = Urls::create();
+		//echo "<pre>";
+		//print_r($url);
+		//die();
+		//print_r($url);
+		//die();
+		$error = "";
 		if (!$url) {
 			return $this->redirect('Urls::index');
 		}
 		if (($this->request->data) && $url->save($this->request->data)) {
 			return $this->redirect(array('Urls::view', 'args' => array($url->id)));
 		}
-		return compact('url');
+		return compact("url_link",'url',"error");
 	}
 
 	public function delete() {
-		if (!$this->request->is('post') && !$this->request->is('delete')) {
+		/*if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Urls::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
-		}
-		Urls::find($this->request->id)->delete();
+		}*/
+		$options['conditions'] = array('shortlink' => $this->request->shortcode);
+		Urls::find('all',$options)->delete();
 		return $this->redirect('Urls::index');
+	}
+	
+	public function admin() {
 	}
 }
 
