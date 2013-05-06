@@ -18,8 +18,12 @@ if (!Environment::is('production')) {
  * 
  */
 Router::connect('/', 'Urls::index');
+Router::connect('/{:shortcode}', array('Urls::logs'));
 Router::connect('/{:shortcode}/admin', array('Urls::admin'));
 Router::connect('/{:shortcode}/edit', array('Urls::edit'));
+Router::connect('/{:shortcode}/delete', array('Urls::delete'));
+
+Router::connect('/new', 'Urls::add');
 
 //Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
 //Router::connect('/{:controller}/{:action}/{:id:\d+}');
