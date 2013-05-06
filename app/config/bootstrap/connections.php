@@ -41,9 +41,16 @@ use lithium\data\Connections;
  * Uncomment this configuration to use MongoDB as your default database.
  */
 Connections::add('default', array(
- 	'type' => 'MongoDb',
- 	'host' => 'localhost',
- 	'database' => 'link_shortener'
+  'development' => array(
+    'type' => 'MongoDb',
+    'host' => 'localhost',
+ 	  'database' => 'link_shortener_dev' 
+  ),
+  'production' => array(
+    'type' => 'MongoDb',
+    'host' => 'localhost',
+    'database' => 'link_shortener_prod' 
+  )
 ));
 
 /**
