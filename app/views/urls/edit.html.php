@@ -1,8 +1,8 @@
 <h1> URL to shrink: </h1>
 <p style="color:red"><?php //Secho $error; ?></p>
-<?= $this->form->create($url_link); ?>
+<?= $this->form->create($url_d); ?>
 
-<?= $this->form->text('url'); ?>
+<?= $this->form->field('url',array(	'value' => $url->url)); ?>
 <?= $this->form->submit('Add Link'); ?>
 <?= $this->form->end(); ?>
 <?php /**
