@@ -41,24 +41,15 @@ class UrlsController extends \lithium\action\Controller {
 	public function add() {
 		
 		$url = Urls::create();
-		$error = "";
 		if ($this->request->data) {
-		
-		$data = $this->request->data;
-		$this->request->data['hash'] = Password::hash($data['url']);
-		$new_shortlink = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5);
-		$this->request->data['shortlink'] = $new_shortlink;
-			if($url->save($this->request->data)) {
-				//return $this->redirect(array('Urls::view', 'args' => array($url->id)));
-				$shortlink = $new_shortlink;
-			} else { 
-				 $errors = $url->errors();
-				 if(isset($errors['url'])){
-					$error = "Errors:".implode(', ',$errors['url']);
-				 }
+			$this->request->data['hash'] = Password::hash($data['url']);
+			$this->request->data['shortcode'] = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 5);
+			$url->set($this->request->data);
+			if($url->validates() && $url->save()) {
+				return $this->redirect(array('Urls::view', 'shortcode' => $url->shortcode));
 			}
 		}
-		return compact('url','error','shortlink');
+		return compact('url');
 	}
 
 	public function edit() {
